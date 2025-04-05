@@ -7,13 +7,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
       <li class="nav-item">
-          <a class="nav-link " aria-current="page" href="/home.php">Home</a>
+          <a class="nav-link " aria-current="page" href="home.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " aria-current="page" href="/login.php">Log in</a>
+          <a class="nav-link " aria-current="page" href="login.php">Log in</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/signin.php">Sign Up</a>
+          <a class="nav-link" href="signin.php">Sign Up</a>
         </li>
     </div>
   </div>
