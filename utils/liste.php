@@ -1,3 +1,4 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <?php
 include("../classes/section.php");
 $res="";
@@ -12,7 +13,7 @@ if(isset($_GET['id'])){
                     foreach($stud as $key => $val){
                         $res.= $key=="image"?"<td><img src='".$val."' alt='profile' height=50 width=50></td>":"<td>".$val."</td>";
                     }
-                    $res.= "<td><a href='read.php?id=".$stud->id."'>Read</a> ";
+                    $res.= "<td><a href='read.php?id=".$stud->id."&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
                     $res.= "</td></tr>";
                 }
     }
@@ -22,10 +23,13 @@ if(isset($_GET['id'])){
 
 include("../header.php");
 ?>
-<div>
-<table class="table">
+<div class="container">
+    <br>
+    <div class=" alert alert-light" role="alert"> List of students</div>
+    <br>
+    <table class="table">
             <thead>
-                <tr><td>id</td><td>image</td><td>name</td><td>birthday</td><td>section</td></tr>
+                <tr><td>Id</td><td>Name</td><td>Image</td><td>Birthday</td><td>Action</td></tr>
             </thead>
             <tbody>
                 <?php echo $res;
@@ -35,5 +39,7 @@ include("../header.php");
             </table>
     <button> <a href="<?php echo $ret;?>">Return</a></button>
 </div>
+
+
 <?php
 include("../footer.php");
