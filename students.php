@@ -17,11 +17,16 @@ $role=$_SESSION["user"]["role"];
                         echo "<div class='filter'>
                             <input type='text' name='textFilter' id='textFilter'>
                             <button>Filtrer</button>
-                            <a href='utils/add.php'>add</a>
+                            <a href='utils/add.php'><i class='bi bi-person-add'></i></a>
                         </div>";
                     }
         ?>
         <br>
+        <div class="export">
+            <button onclick="window.location.href='export_csv.php'">Export CSV</button>
+            <button onclick="window.location.href='export_excel.php'">Export Excel</button>
+            <button onclick="window.location.href='export_pdf.php'">Export PDF</button>
+        </div>
         <br>
         <table class="table">
             <thead>
@@ -35,10 +40,10 @@ $role=$_SESSION["user"]["role"];
                         echo $key=="image"?"<td><img src='".$val."' alt='profile' height=50 width=50></td>":"<td>".$val."</td>";
                     }
                     
-                    echo "<td><a href='utils/read.php?id=".$stud->id."&type=student'>read</a> ";
+                    echo "<td><a href='utils/read.php?id=".$stud->id."&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
                     if($role== "admin"){
-                        echo "<a href='utils/delete.php?id=".$stud->id."&type=student'>delete</a> 
-                        <a href='utils/edit?id=".$stud->id."&type=student'>edit</a>";
+                        echo "<a href='utils/delete.php?id=".$stud->id."&type=student'><i class='bi bi-eraser-fill'></i></a> 
+                        <a href='utils/edit?id=".$stud->id."&type=student'><i class='bi bi-pencil-square'></i></a>";
                     }
                     echo "</td></tr>";
                 }
