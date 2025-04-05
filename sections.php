@@ -1,4 +1,5 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 <?php
 include("classes/section.php");
 $sect=new Section();
@@ -16,6 +17,14 @@ $role=$_SESSION["user"]["role"];
             <thead>
                 <tr><td>id</td><td>designation</td><td>description</td><td>Actions</td></tr>
             </thead>
+            <div class="container">
+            <div class="export">
+            <button onclick="window.location.href='export_csv_section.php'">Export CSV</button>
+            <button onclick="window.location.href='export_excel_section.php'">Export Excel</button>
+            <button onclick="window.location.href='export_pdf_section.php'">Export PDF</button>
+            </div>
+            </div>
+            <br>
             <tbody>
                 <?php 
                 foreach($listeSections as $stud){
