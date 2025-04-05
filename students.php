@@ -1,10 +1,34 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <?php
+ob_start(); 
 include("classes/student.php");
 $std=new Student();
-$listeStudents=$std->findAll();
 include("header.php");
 $role=$_SESSION["user"]["role"];
+if (isset($_GET['ajax'])) {
+    header('Content-Type: application/json');
+
+    $students = $std->findAll();
+    
+    if (!$students) {
+        echo json_encode(["error" => "No students found."]);
+        exit();
+    }
+
+    foreach ($students as &$student) {
+        $id = $student->id ?? '';
+
+        $actions = "<a href='utils/read.php?id={$id}&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
+        if ($role === "admin") {
+            $actions .= "<a href='utils/delete.php?id={$id}&type=student'><i class='bi bi-eraser-fill'></i></a> ";
+            $actions .= "<a href='utils/edit.php?id={$id}&type=student'><i class='bi bi-pencil-square'></i></a>";
+        }
+        $student->actions = $actions; 
+    }
+
+    ob_end_clean(); 
+    echo json_encode(array_values($students), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    exit();
+}
 ?>
 <br>
 <div class=" alert alert-light" role="alert"> List of students</div>
@@ -28,31 +52,55 @@ $role=$_SESSION["user"]["role"];
             <button onclick="window.location.href='export_pdf.php'">Export PDF</button>
         </div>
         <br>
-        <table class="table">
-            <thead>
-                <tr><td>id</td><td>image</td><td>name</td><td>birthday</td><td>section</td><td>Actions</td></tr>
-            </thead>
-            <tbody>
-                <?php 
-                foreach($listeStudents as $stud){
-                    echo "<tr>";
-                    foreach($stud as $key => $val){
-                        echo $key=="image"?"<td><img src='".$val."' alt='profile' height=50 width=50></td>":"<td>".$val."</td>";
-                    }
-                    
-                    echo "<td><a href='utils/read.php?id=".$stud->id."&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
-                    if($role== "admin"){
-                        echo "<a href='utils/delete.php?id=".$stud->id."&type=student'><i class='bi bi-eraser-fill'></i></a> 
-                        <a href='utils/edit?id=".$stud->id."&type=student'><i class='bi bi-pencil-square'></i></a>";
-                    }
-                    echo "</td></tr>";
-                }
-                ?>
-            </tbody>
-            
-        </table>
+
+        <table id="studentsTable" class="display table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Birthday</th>
+                <th>Section</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody> 
+    </table>
     </div>
 <?php
 
 include("footer.php");
 ?>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+<script>
+$(document).ready(function() {
+    $('#studentsTable').DataTable({
+        "ajax": {
+            "url": "students.php?ajax=1",
+            "dataSrc": ""
+        },
+        "columns": [
+            { "data": "id" },
+            { 
+                "data": "image",
+                "render": function(data) {
+                    return `<img src="${data}" width="50" height="50">`;
+                }
+            },
+            { "data": "name" },
+            { "data": "birthday" },
+            { "data": "designation" },
+            { 
+                "data": "actions",
+                "orderable": false,
+                "searchable": false,
+                "defaultContent": "" 
+            }
+        ]
+    });
+});
+</script>

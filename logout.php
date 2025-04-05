@@ -2,4 +2,4 @@
 include("classes/isAuth.php");
 $ses=new IsAuth();
 $ses->supprimerSession();
-header("location:home.php");
+header("location:index.php");
