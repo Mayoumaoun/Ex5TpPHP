@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../style.css">
 <?php
 include("../classes/student.php");
 $res="";
@@ -7,11 +8,28 @@ if(isset($_GET['id'])){
     $user=new Student();
     $details=$user->findById($id);
     if($details){
-                $res="<div><h2>Student of id ".$details->id."</h2>
-                <img src='".$details->image."' width=150 height=150>".$details->name."<br> <h3>birthday:</h3>  ".$details->birthday."<br><h3>section :</h3> ".$details->section."
-                <br><br>";
+       echo "<div class='container mt-4'>";
+$res = "
+    <div class='card p-4'>
+        <h2 class='card-title text-center'>Student Details (ID: ".$details->id.")</h2>
+        <div class='row'>
+            <div class='col-md-4'>
+                <img class='img-fluid' src='".$details->image."' alt='Profile Image'>
+            </div>
+            <div class='col-md-8'>
+                <p><strong>Name:</strong> ".$details->name."</p>
+                <p><strong>Birthday:</strong> ".$details->birthday."</p>
+                <p><strong>Section:</strong> ".$details->section."</p>
+            </div>
+        </div>
+    </div>
+</div>";
+    }else{
+        $res = "<div class='alert alert-danger'>Student not found.</div>";
+
     }
     $ret="../students.php";
+    
 }
 
 
