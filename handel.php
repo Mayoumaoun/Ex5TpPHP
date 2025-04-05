@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // start his session
             $ses=new IsAuth();
             $ses->creerSession($user->getId($mail,$password),$user->getRole($mail,$password));
-            header("Location: home.php");
+            header("Location:home1.php");
             exit();
         }
         else{
