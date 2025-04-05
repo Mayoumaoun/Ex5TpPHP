@@ -3,7 +3,7 @@ class connexion
 {
     private static $_dbname = "plateforme";
     private static $_user = "root";
-    private static $_pwd = "root123*/gi";
+    private static $_pwd = "root123*/";
     private static $_host = "127.0.0.1:3305";
 
     private static $_bdd = null;

@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="../style.css">
 <?php
 include("../classes/student.php");
+include("../header.php");
 $res="";
 $ret="";
 if(isset($_GET['id'])){
@@ -33,13 +34,16 @@ $res = "
 }
 
 
-include("../header.php");
+
 ?>
 <div>
-    <?php
-    echo $res;
-    ?>
-    <button> <a href="<?php echo $ret;?>">Return</a></button>
+    <?php echo $res; ?>
+    <div class="d-flex justify-content-center mt-4">
+        <button class="btn btn-primary">
+            <a href="<?php echo $ret; ?>" class="text-white">Return</a>
+        </button>
+    </div>
 </div>
+
 <?php
 include("../footer.php");
