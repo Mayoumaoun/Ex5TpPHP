@@ -1,3 +1,4 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <?php
 include("classes/section.php");
 $sect=new Section();
@@ -5,8 +6,9 @@ $listeSections=$sect->findAll();
 include("header.php");
 $role=$_SESSION["user"]["role"];
 ?>
-    <div>
-        <p>Liste des sections</p>
+        <br>
+        <div class=" alert alert-light" role="alert"> List of students</div>
+        <div class="container">
         
         <div class="export"></div>
         
@@ -21,13 +23,14 @@ $role=$_SESSION["user"]["role"];
                     foreach($stud as $key => $val){
                         echo "<td>".$val."</td>";
                     }
-                    echo "<td><a href='utils/liste.php?id=".$stud->id."&type=section'>Liste</a> ";
+                    echo "<td><a href='utils/liste.php?id=".$stud->id."&type=section'><i class='bi bi-list'></i></a> ";
                     echo "</td></tr>";
                 }
                 ?>
             </tbody>
         </table>
-    </div>
+        </div>
+
 <?php
 
 include("footer.php");
