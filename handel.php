@@ -57,16 +57,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['form_type']) && $_POST['form_type']=='add') {
+        $imagePath = "";
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+            $tmpName = $_FILES['image']['tmp_name'];
+            $originalName = basename($_FILES['image']['name']);
+            $uniqueName = uniqid() . "_" . $originalName;
+            $destination = "uploads/" . $uniqueName;
+
+            if (move_uploaded_file($tmpName, $destination)) {
+                $imagePath = $uniqueName;
+            }
+        }
+        
         $data = [
             "name" => $_POST['name'],
             "birthday" => $_POST['birthday'],
             "section" => $_POST['section'],
-            "image"=>"https://th.bing.com/th/id/R.1d9d4000e3ef34fba93a8f359e8ef9e2?rik=fDp1i%2fJVHPhlVQ&riu=http%3a%2f%2fwww.marktechpost.com%2fwp-content%2fuploads%2f2023%2f05%2f7309681-scaled.jpg&ehk=IgADd%2fEbiE2skKDk%2fFHhD%2bN8Ss1b4ypy2OFMTVYvHN4%3d&risl=&pid=ImgRaw&r=0"
-        ];
-        // if(isset($_FILES['image'])){
-        //     $newFileName = 'uploads/'.uniqid().$_FILES['image']['name'];
-        //     copy($_FILES['image']['tmp_name'], $newFileName);
-        // }
+            "image" => $imagePath        ];
+        
         $std=new Student();
         $std->create($data);
         header("Location: students.php");

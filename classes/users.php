@@ -57,7 +57,7 @@ class User{
         return false;
     }
     public function getId( $email,$password ){
-        $req = $this->db->prepare("SELECT id from {$this->tableName} where email=:email ");
+        $req = $this->db->prepare("SELECT id, password from {$this->tableName} where email=:email ");
         $req->execute(array("email"=>$email));
         $res = $req->fetch(PDO::FETCH_OBJ);
         if ($res && password_verify($password, $res->password)) {
@@ -67,7 +67,7 @@ class User{
         return null;
     }
     public function getRole( $email,$password ){
-        $req = $this->db->prepare("SELECT role from {$this->tableName} where email=:email  ");
+        $req = $this->db->prepare("SELECT role,password from {$this->tableName} where email=:email  ");
         $req->execute(array("email"=>$email));
         $res = $req->fetch(PDO::FETCH_OBJ);
         if ($res && password_verify($password, $res->password)) {

@@ -15,7 +15,7 @@ $res = "
         <h2 class='card-title text-center'>Student Details (ID: ".$details->id.")</h2>
         <div class='row'>
             <div class='col-md-4'>
-                <img class='img-fluid' src='".$details->image."' alt='Profile Image'>
+                <img class='img-fluid' src='../uploads/".$details->image."' alt='Profile Image'>
             </div>
             <div class='col-md-8'>
                 <p><strong>Name:</strong> ".$details->name."</p>

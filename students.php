@@ -13,9 +13,10 @@ if (isset($_GET['ajax'])) {
         echo json_encode(["error" => "No students found."]);
         exit();
     }
-
+    
     foreach ($students as &$student) {
         $id = $student->id ?? '';
+        $student->image = "uploads/" . $student->image;
 
         $actions = "<a href='utils/read.php?id={$id}&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
         if ($role === "admin") {
