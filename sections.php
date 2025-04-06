@@ -53,7 +53,7 @@ if (isset($_GET['ajax'])|| isset($_POST['ajax'])) {
             echo "<div class='filter'>
                             <input type='text' name='textFilter' id='textFilter'>
                             <button>Filtrer</button>
-                            <a href='SECTION/add_section.php'><i class='bi bi-folder-plus'></i></a>
+                            <a href='SECTION/add_section.php'><i class='bi bi-folder-plus fs-3 me-3'></i></a>
                         </div><br>";
         }
         ?>
