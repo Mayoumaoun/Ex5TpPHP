@@ -4,7 +4,7 @@ ob_start();
 include("classes/section.php");
 $sect=new Section();
 include("header.php");
-if (isset($_GET['ajax'])) {
+if (isset($_GET['ajax'])|| isset($_POST['ajax'])) {
     header('Content-Type: application/json');
 
     $listeSections=$sect->findAll();
@@ -13,7 +13,19 @@ if (isset($_GET['ajax'])) {
         echo json_encode(["error" => "No sections found"]);
         exit();
     }
+    $filter = $_POST['filter'] ?? '';
 
+    if (!empty($filter)) {
+        $filter = strtolower($filter); 
+
+        $listeSections = array_filter($listeSections, function($section) use ($filter) {
+            return (
+                stripos($section->id, $filter) !== false ||
+                stripos($section->designation, $filter) !== false ||
+                stripos($section->description, $filter) !== false
+            );
+        });
+    }
     foreach ($listeSections as &$section) {
         $id = $section->id;
 
@@ -36,9 +48,11 @@ if (isset($_GET['ajax'])) {
         <?php
         $role = $_SESSION["user"]["role"];
         if ($role === "admin") {
-            echo "<div>
-                    <a href='SECTION/add_section.php'><i class='bi bi-folder-plus'></i></a>
-                  </div><br>";
+            echo "<div class='filter'>
+                            <input type='text' name='textFilter' id='textFilter'>
+                            <button>Filtrer</button>
+                            <a href='SECTION/add_section.php'><i class='bi bi-folder-plus'></i></a>
+                        </div><br>";
         }
         ?>
         <div class="export">
@@ -71,9 +85,13 @@ include("footer.php");
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script>
 $(document).ready(function() {
-    $('#sectionsTable').DataTable({
+    const table =$('#sectionsTable').DataTable({
         "ajax": {
             "url": "sections.php?ajax=1",
+            "type": 'POST', 
+            "data": function(d) {
+                d.filter = $('#textFilter').val(); 
+            },
             "dataSrc": ""
         },
         "columns": [
@@ -87,6 +105,9 @@ $(document).ready(function() {
                 "defaultContent": "" 
             }
         ]
+    });
+    $('.filter button').on('click', function() {
+        table.ajax.reload(); 
     });
 });
 </script>
