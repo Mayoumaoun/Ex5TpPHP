@@ -2,6 +2,7 @@
 include("classes/users.php");
 include("classes/isAuth.php");
 include("classes/student.php");
+include("classes/section.php");
 session_start();
 $user=new User();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

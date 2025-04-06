@@ -42,6 +42,12 @@ class Section{
         $result = $req->fetchAll(PDO::FETCH_OBJ);
         return $result;
     }
+    public function countStudentsBySection($id) {
+        $req = $this->db->prepare("SELECT COUNT(*) as total FROM student WHERE section = :id");
+        $req->execute(['id' => $id]);
+        $res = $req->fetch(PDO::FETCH_OBJ);
+        return $res->total;
+    }
     public function update($id, $data)
 {
     $temp = [];
