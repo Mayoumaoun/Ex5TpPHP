@@ -1,5 +1,8 @@
 <?php
 include("header.php");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+  }
 ?>
     
     <link rel="stylesheet" href="style.css">
@@ -27,16 +30,22 @@ include("header.php");
                 <option name="role" value="user" selected>User</option>
             </select>
         </div>
-        <div class="col-md-5">
-        </div>
+        
         <div class="col-md-4">
             <button type="submit" class="btn btn-primary">Sign Up</button>
         </div>
-        <div class="col-md-4">
-        </div>
-    </form>
-    </div>
-    </div>
-<?php
-include("footer.php");
-?>
+  
+    <?php if (isset($_SESSION['errorMessage'])){ ?>
+         
+  <div class="alert alert-danger">
+  <?= $_SESSION['errorMessage']?>
+  </div>
+<?php  unset($_SESSION['errorMessage']);} ?>
+
+<div class="col-12 text-center mt-3">
+<p>Vous avez déjà un compte ? <a href="login.php">Connectez-vous</a></p>
+</div>
+</form> 
+</div>
+</div>
+<?php include("footer.php");?>

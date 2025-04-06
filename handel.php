@@ -2,33 +2,52 @@
 include("classes/users.php");
 include("classes/isAuth.php");
 include("classes/student.php");
+session_start();
 $user=new User();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['form_type']) && $_POST['form_type']=='login') {
         $mail=$_POST['email'];
         $password=$_POST['password'];
+
+        if(! $mail || ! $password) {
+            $_SESSION['errorMessage'] = "Veuillez remplir tous les champs.";
+              header("Location: login.php");
+              exit();
+          }
+
         if($user->isUser($mail,$password) || $user->isAdmin($mail,$password)){
-            // start his session
             $ses=new IsAuth();
             $ses->creerSession($user->getId($mail,$password),$user->getRole($mail,$password));
             header("Location:home1.php");
             exit();
         }
         else{
+            $_SESSION['errorMessage'] = "Email ou mot de passe incorrect.";
             header("Location:login.php");
             exit();
         }
     } elseif (isset($_POST['form_type']) && $_POST['form_type']=='signup') {
+        
+        $username=$_POST['username'];
         $email=$_POST['email'];
-        if($user->mailExist($email)) {
+        $password=$_POST['password'];
+        $role=$_POST['role'];
+        if (! $username || ! $email|| !$password || !$role) {
+            $_SESSION['errorMessage'] = "Veuillez remplir tous les champs.";
             header("Location: signin.php");
-            exit();}
+            exit();
+        }
+        if($user->mailExist($email)) {
+            $_SESSION['errorMessage']="Cet email est déjà utilisé.";
+      header("Location: signin.php");
+      exit();}
         else{
         $data = [
-            "username" => $_POST['username'],
-            "email" => $_POST['email'],
-            "role" => $_POST['role'],
-            "password" => $_POST['password']
+            "username" => $username,
+            "email" => $email,
+            "role" => $role,
+            "password" => $hashedPassword = password_hash($password, PASSWORD_DEFAULT)
+
         ];
         $user->create($data);
         header("Location: login.php");
