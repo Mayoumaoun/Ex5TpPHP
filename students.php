@@ -48,6 +48,7 @@ if (isset($_GET['ajax'])) {
         ?>
         <br>
         <div class="export">
+        <button onclick="window.location.href='export_copy.php'">Copy</button>
             <button onclick="window.location.href='export_csv.php'">Export CSV</button>
             <button onclick="window.location.href='export_excel.php'">Export Excel</button>
             <button onclick="window.location.href='export_pdf.php'">Export PDF</button>
