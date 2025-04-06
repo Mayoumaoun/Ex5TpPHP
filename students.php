@@ -20,7 +20,7 @@ if (isset($_GET['ajax'])) {
 
         $actions = "<a href='utils/read.php?id={$id}&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
         if ($role === "admin") {
-            $actions .= "<a href='utils/delete.php?id={$id}&type=student'><i class='bi bi-eraser-fill'></i></a> ";
+            $actions .= "<a href='utils/delete.php?id={$id}&type=student' onclick=\"return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');\"><i class='bi bi-eraser-fill'></i></a> ";
             $actions .= "<a href='utils/edit.php?id={$id}&type=student'><i class='bi bi-pencil-square'></i></a>";
         }
         $student->actions = $actions; 

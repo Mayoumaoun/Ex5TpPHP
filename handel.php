@@ -80,6 +80,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: students.php");
         exit();
     }
+    if (isset($_POST['form_type']) && $_POST['form_type'] == 'add_section') {
+        $data = [
+            "designation" => $_POST['designation'],
+            "description" => $_POST['description']
+        ];
+        $sect = new Section();
+        $sect->create($data);
+        header("Location: sections.php");
+        exit();
+    }
 
 }
 ?>
