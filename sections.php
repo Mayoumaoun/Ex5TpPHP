@@ -42,9 +42,11 @@ if (isset($_GET['ajax'])|| isset($_POST['ajax'])) {
     exit();
 }
 ?>
-        <br>
-        <div class=" alert alert-light" role="alert"> List of students</div>
-        <div class="container">
+           <br>
+<div class="alert alert-light" role="alert">List of sections</div>
+<div class="container">
+
+    <div class="d-flex flex-column gap-3 mb-4">
         <?php
         $role = $_SESSION["user"]["role"];
         if ($role === "admin") {
@@ -55,14 +57,15 @@ if (isset($_GET['ajax'])|| isset($_POST['ajax'])) {
                         </div><br>";
         }
         ?>
-        <div class="export">
-            <button onclick="window.location.href='export_copy_section.php'">Copy</button>
-            <button onclick="window.location.href='export_csv_section.php'">Export CSV</button>
-            <button onclick="window.location.href='export_excel_section.php'">Export Excel</button>
-            <button onclick="window.location.href='export_pdf_section.php'">Export PDF</button>
-            </div>
+
+        <div class="export d-flex flex-wrap gap-2">
+            <button onclick="window.location.href='export_copy_section.php'" class="btn btn-outline-dark">Copy</button>
+            <button onclick="window.location.href='export_csv_section.php'" class="btn btn-outline-dark">Export CSV</button>
+            <button onclick="window.location.href='export_excel_section.php'" class="btn btn-outline-dark">Export Excel</button>
+            <button onclick="window.location.href='export_pdf_section.php'" class="btn btn-outline-dark">Export PDF</button>
+        </div>
+    </div>   
             <br>
-        
         <table id="sectionsTable" class="display">
         <thead>
             <tr>
