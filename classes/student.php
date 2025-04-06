@@ -41,4 +41,17 @@ class Student{
         $req = $this->db->prepare("INSERT INTO $this->tableName ($names) VALUES ($vals)");
         $req->execute($data);
     }
+    public function update($id, $data)
+    {
+        $temp = [];
+        foreach ($data as $key => $value) {
+            $temp[] = "$key = :$key";
+        }
+        $clause = implode(", ", $temp);
+        $req = "update {$this->tableName} set $clause where id = :id";
+        $stmt = $this->db->prepare($req);
+        $data["id"] = $id;
+        return $stmt->execute($data);
+    }
+
 }

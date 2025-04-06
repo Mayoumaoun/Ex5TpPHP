@@ -1,5 +1,8 @@
 <?php
 include("../header.php");
+include("../classes/section.php");
+$sect = new Section();
+$sections = $sect->findAll();
 ?>
     <div class="container mt-4">
     <form action="../handel.php" method="post" enctype="multipart/form-data">
@@ -16,24 +19,13 @@ include("../header.php");
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Section:</label><br>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="section" value="1" id="gl">
-                <label class="form-check-label" for="gl">GL</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="section" value="2" id="rt">
-                <label class="form-check-label" for="rt">RT</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="section" value="3" id="iia">
-                <label class="form-check-label" for="iia">IIA</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="section" value="4" id="imi">
-                <label class="form-check-label" for="imi">IMI</label>
-            </div>
-        </div>
+        <label class="form-label">Section:</label><br>
+            <?php foreach ($sections as $s){?>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="section" value="<?= $s->id ?>" id="<?= $s->designation ?>">
+                    <label class="form-check-label" for="<?= $s->designation ?>"><?= strtoupper($s->designation) ?></label>
+                </div>
+            <?php }?>
 
         <div class="mb-3">
             <label for="image" class="form-label">Image:</label>

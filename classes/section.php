@@ -24,11 +24,11 @@ class Section{
         $elements = $response->fetch(PDO::FETCH_OBJ);
         return $elements;
     }
-    public function delete( $id)
-    {
-        $req = $this->db->prepare('DELETE  FROM {$this->tableName} WHERE id=:id');
-        $req->execute(array('id'=>$id));
-    }
+    public function delete($id)
+        {
+            $req = $this->db->prepare("DELETE FROM {$this->tableName} WHERE id = :id");
+            $req->execute(['id' => $id]);
+        }
     public function create($data)
     {   
         $names = implode(',', array_keys($data));
@@ -42,4 +42,22 @@ class Section{
         $result = $req->fetchAll(PDO::FETCH_OBJ);
         return $result;
     }
+    public function countStudentsBySection($id) {
+        $req = $this->db->prepare("SELECT COUNT(*) as total FROM student WHERE section = :id");
+        $req->execute(['id' => $id]);
+        $res = $req->fetch(PDO::FETCH_OBJ);
+        return $res->total;
+    }
+    public function update($id, $data)
+{
+    $temp = [];
+    foreach ($data as $key => $value) {
+        $temp[] = "$key = :$key";
+    }
+    $clause = implode(", ", $temp);
+    $req = "UPDATE {$this->tableName} SET $clause WHERE id = :id";
+    $stmt = $this->db->prepare($req);
+    $data["id"] = $id;
+    return $stmt->execute($data);
+}
 }

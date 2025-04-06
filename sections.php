@@ -17,8 +17,11 @@ if (isset($_GET['ajax'])) {
     foreach ($listeSections as &$section) {
         $id = $section->id;
 
-        $actions = "<a href='utils/liste.php?id={$id}&type=student'><i class='bi bi-list'></i></a> ";
-        
+        $actions = "<a href='SECTION/liste.php?id={$id}&type=student'><i class='bi bi-list'></i></a> ";
+        if ($_SESSION["user"]["role"] === "admin") {
+            $actions .= "<a href='SECTION/edit_section.php?id={$id}'><i class='bi bi-pencil-square'></i></a> ";
+            $actions .= "<a href='SECTION/delete_section.php?id={$id}' onclick=\"return confirm('Êtes-vous sûr de vouloir supprimer cette section ? ');\"><i class='bi bi-trash-fill'></i></a>";
+        }
         $section->actions = $actions; 
     }
 
@@ -30,8 +33,16 @@ if (isset($_GET['ajax'])) {
         <br>
         <div class=" alert alert-light" role="alert"> List of students</div>
         <div class="container">
-        
+        <?php
+        $role = $_SESSION["user"]["role"];
+        if ($role === "admin") {
+            echo "<div>
+                    <a href='SECTION/add_section.php'><i class='bi bi-folder-plus'></i></a>
+                  </div><br>";
+        }
+        ?>
         <div class="export">
+            <button onclick="window.location.href='export_copy_section.php'">Copy</button>
             <button onclick="window.location.href='export_csv_section.php'">Export CSV</button>
             <button onclick="window.location.href='export_excel_section.php'">Export Excel</button>
             <button onclick="window.location.href='export_pdf_section.php'">Export PDF</button>

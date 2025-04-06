@@ -4,7 +4,7 @@ include("classes/student.php");
 $std=new Student();
 include("header.php");
 $role=$_SESSION["user"]["role"];
-if (isset($_GET['ajax'])) {
+if (isset($_GET['ajax'])|| isset($_POST['ajax'])) {
     header('Content-Type: application/json');
 
     $students = $std->findAll();
@@ -13,13 +13,26 @@ if (isset($_GET['ajax'])) {
         echo json_encode(["error" => "No students found."]);
         exit();
     }
+    $filter = $_POST['filter'] ?? '';
 
+    if (!empty($filter)) {
+        $filter = strtolower($filter); 
+
+        $students = array_filter($students, function($student) use ($filter) {
+            return (
+                stripos($student->id, $filter) !== false ||
+                stripos($student->name, $filter) !== false ||
+                stripos($student->designation, $filter) !== false
+            );
+        });
+    }
     foreach ($students as &$student) {
         $id = $student->id ?? '';
+        $student->image = "uploads/" . $student->image;
 
-        $actions = "<a href='utils/read.php?id={$id}&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
+        $actions = "<a href='SECTION/read.php?id={$id}&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
         if ($role === "admin") {
-            $actions .= "<a href='utils/delete.php?id={$id}&type=student'><i class='bi bi-eraser-fill'></i></a> ";
+            $actions .= "<a href='utils/delete.php?id={$id}&type=student' onclick=\"return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');\"><i class='bi bi-eraser-fill'></i></a> ";
             $actions .= "<a href='utils/edit.php?id={$id}&type=student'><i class='bi bi-pencil-square'></i></a>";
         }
         $student->actions = $actions; 
@@ -47,6 +60,7 @@ if (isset($_GET['ajax'])) {
         ?>
         <br>
         <div class="export">
+        <button onclick="window.location.href='export_copy.php'">Copy</button>
             <button onclick="window.location.href='export_csv.php'">Export CSV</button>
             <button onclick="window.location.href='export_excel.php'">Export Excel</button>
             <button onclick="window.location.href='export_pdf.php'">Export PDF</button>
@@ -78,9 +92,13 @@ include("footer.php");
 
 <script>
 $(document).ready(function() {
-    $('#studentsTable').DataTable({
+    const table =$('#studentsTable').DataTable({
         "ajax": {
             "url": "students.php?ajax=1",
+            "type": 'POST', 
+            "data": function(d) {
+                d.filter = $('#textFilter').val(); 
+            },
             "dataSrc": ""
         },
         "columns": [
@@ -101,6 +119,9 @@ $(document).ready(function() {
                 "defaultContent": "" 
             }
         ]
+    });
+    $('.filter button').on('click', function() {
+        table.ajax.reload(); 
     });
 });
 </script>

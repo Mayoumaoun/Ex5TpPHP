@@ -11,8 +11,10 @@ if(isset($_GET['id'])){
                 foreach($details as $stud){
                     $res.="<tr>";
                     foreach($stud as $key => $val){
-                        $res.= $key=="image"?"<td><img src='".$val."' alt='profile' height=50 width=50></td>":"<td>".$val."</td>";
-                    }
+                        $res .= $key == "image"
+                        ? "<td><img src='../uploads/{$val}' alt='profile' height='50' width='50'></td>"
+                        : "<td>{$val}</td>";
+                                        }
                     $res.= "<td><a href='read.php?id=".$stud->id."&type=student'><i class='bi bi-info-circle-fill'></i></a> ";
                     $res.= "</td></tr>";
                 }

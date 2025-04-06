@@ -38,18 +38,16 @@ class User{
         return $req->execute($data);
     }
     public function isAdmin( $email,$password ){
-        $req = $this->db->prepare("SELECT * from {$this->tableName} where email=:email and password=:password and role='admin'");
-        $req->execute(array("email"=>$email,"password"=>$password));
+        $req = $this->db->prepare("SELECT * FROM {$this->tableName} WHERE email = :email AND role = 'admin'");
+        $req->execute(["email" => $email]);
         $res = $req->fetch(PDO::FETCH_OBJ);
-        if($res) return true;
-        return false;
+        return $res && password_verify($password, $res->password);
     }
     public function isUser( $email,$password ){
-        $req = $this->db->prepare("SELECT * from {$this->tableName} where email=:email and password=:password and role='user'");
-        $req->execute(array("email"=>$email,"password"=>$password));
+        $req = $this->db->prepare("SELECT * from {$this->tableName} where email=:email and role='user'");
+        $req->execute(array("email"=>$email));
         $res = $req->fetch(PDO::FETCH_OBJ);
-        if($res) return true;
-        return false;
+        return ($res && password_verify($password, $res->password));
     }
     public function mailExist( $email){
         $req = $this->db->prepare("SELECT * from {$this->tableName} where email=:email");
@@ -59,16 +57,24 @@ class User{
         return false;
     }
     public function getId( $email,$password ){
-        $req = $this->db->prepare("SELECT id from {$this->tableName} where email=:email and password=:password ");
-        $req->execute(array("email"=>$email,"password"=>$password));
+        $req = $this->db->prepare("SELECT id, password from {$this->tableName} where email=:email ");
+        $req->execute(array("email"=>$email));
         $res = $req->fetch(PDO::FETCH_OBJ);
-        return($res->id);
+        if ($res && password_verify($password, $res->password)) {
+            return $res->id;
+        }
+    
+        return null;
     }
     public function getRole( $email,$password ){
-        $req = $this->db->prepare("SELECT role from {$this->tableName} where email=:email and password=:password ");
-        $req->execute(array("email"=>$email,"password"=>$password));
+        $req = $this->db->prepare("SELECT role,password from {$this->tableName} where email=:email  ");
+        $req->execute(array("email"=>$email));
         $res = $req->fetch(PDO::FETCH_OBJ);
-        return($res->role);
+        if ($res && password_verify($password, $res->password)) {
+            return $res->role;
+        }
+    
+        return null;
     }
     public function findAllAdmin()
     {
