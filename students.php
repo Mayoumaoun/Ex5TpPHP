@@ -40,18 +40,18 @@ if (isset($_GET['ajax'])) {
         <?php
         if($role== "admin"){
                         echo "<div class='filter'>
-                            <input type='text' name='textFilter' id='textFilter'>
-                            <button>Filtrer</button>
+                            <input type='text' name='textFilter' id='textFilter' >
+                            <button class='btn btn-outline-dark'>Filtrer</button>
                             <a href='utils/add.php'><i class='bi bi-person-add'></i></a>
                         </div>";
                     }
         ?>
         <br>
         <div class="export">
-        <button onclick="window.location.href='export_copy.php'">Copy</button>
-            <button onclick="window.location.href='export_csv.php'">Export CSV</button>
-            <button onclick="window.location.href='export_excel.php'">Export Excel</button>
-            <button onclick="window.location.href='export_pdf.php'">Export PDF</button>
+        <button onclick="window.location.href='export_copy.php'" class="btn btn-outline-dark">Copy</button>
+            <button onclick="window.location.href='export_csv.php'" class="btn btn-outline-dark">Export CSV</button>
+            <button onclick="window.location.href='export_excel.php'" class="btn btn-outline-dark">Export Excel</button>
+            <button onclick="window.location.href='export_pdf.php'" class="btn btn-outline-dark">Export PDF</button>
         </div>
         <br>
 
